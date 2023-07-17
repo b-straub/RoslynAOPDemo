@@ -38,6 +38,16 @@ namespace LogAspectSG.Engine
             _ = sb.Append($@"
 #nullable enable
 
+namespace System.Runtime.CompilerServices
+{{
+    #pragma warning disable CS9113
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    file sealed class InterceptsLocationAttribute(string filePath, int line, int character) : Attribute
+    {{
+    }} 
+    #pragma warning restore CS9113
+}}
+
 namespace {namespaceName}
 {{
     public static class Interceptors

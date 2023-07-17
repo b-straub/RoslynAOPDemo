@@ -11,8 +11,6 @@ namespace LogAspectSG
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            AddInterceptorAttribute(context);
-
             var md = context.MetadataReferencesProvider.Collect();
 
             IncrementalValuesProvider<AdditionalText> logFile = context.AdditionalTextsProvider.Where(static file => file.Path.EndsWith("LogEntries.txt"));
@@ -72,24 +70,6 @@ namespace LogAspectSG
                     context.AddSource(sourceName, generated + source);
                 }
             }
-        }
-
-        private static void AddInterceptorAttribute(IncrementalGeneratorInitializationContext context)
-        {
-            context.RegisterPostInitializationOutput(i =>
-            {
-                var attributeSource = @"
-namespace System.Runtime.CompilerServices
-{
-#pragma warning disable CS9113
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-    public sealed class InterceptsLocationAttribute(string filePath, int line, int character) : Attribute
-    {
-    } 
-#pragma warning restore CS9113
-}";
-                i.AddSource("InterceptsLocationAttribute.g.cs", attributeSource);
-            });
         }
     }
 }
