@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<InvariantGlobalization>true</InvariantGlobalization>
+		<LangVersion>Preview</LangVersion>
+		<Features>InterceptorsPreview</Features>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\LogAspectSG\LogAspectSG.csproj" OutputItemType="Analyzer" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<AdditionalFiles Include="LogEntries.txt" />
+	</ItemGroup>
+	
+</Project>

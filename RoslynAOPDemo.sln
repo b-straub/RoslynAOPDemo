@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.33906.173
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneratorRunner", "GeneratorRunner\GeneratorRunner.csproj", "{1D9C7115-ADAC-460A-8865-096652E1ACE6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogAspectDemo", "LogAspectDemo\LogAspectDemo.csproj", "{ED0230D6-5B01-4B79-85F7-8B9D9D0FFA8B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogAspectSG", "LogAspectSG\LogAspectSG.csproj", "{649B12C7-D3BB-4F13-8F32-6D41B22BFBDC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		DebugKeepJS|Any CPU = DebugKeepJS|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1D9C7115-ADAC-460A-8865-096652E1ACE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D9C7115-ADAC-460A-8865-096652E1ACE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D9C7115-ADAC-460A-8865-096652E1ACE6}.DebugKeepJS|Any CPU.ActiveCfg = DebugKeepJS|Any CPU
+		{1D9C7115-ADAC-460A-8865-096652E1ACE6}.DebugKeepJS|Any CPU.Build.0 = DebugKeepJS|Any CPU
+		{1D9C7115-ADAC-460A-8865-096652E1ACE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D9C7115-ADAC-460A-8865-096652E1ACE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED0230D6-5B01-4B79-85F7-8B9D9D0FFA8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED0230D6-5B01-4B79-85F7-8B9D9D0FFA8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED0230D6-5B01-4B79-85F7-8B9D9D0FFA8B}.DebugKeepJS|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED0230D6-5B01-4B79-85F7-8B9D9D0FFA8B}.DebugKeepJS|Any CPU.Build.0 = Debug|Any CPU
+		{ED0230D6-5B01-4B79-85F7-8B9D9D0FFA8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED0230D6-5B01-4B79-85F7-8B9D9D0FFA8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{649B12C7-D3BB-4F13-8F32-6D41B22BFBDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{649B12C7-D3BB-4F13-8F32-6D41B22BFBDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{649B12C7-D3BB-4F13-8F32-6D41B22BFBDC}.DebugKeepJS|Any CPU.ActiveCfg = Debug|Any CPU
+		{649B12C7-D3BB-4F13-8F32-6D41B22BFBDC}.DebugKeepJS|Any CPU.Build.0 = Debug|Any CPU
+		{649B12C7-D3BB-4F13-8F32-6D41B22BFBDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{649B12C7-D3BB-4F13-8F32-6D41B22BFBDC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B3BB7FB5-DD17-4A1B-85E8-FC5CE2538B95}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,4 @@
+﻿LogAspectTest.InterceptableBaseType.MyMethod
+LogAspectTest.InterceptableType.MyMethod
+LogAspectTest.InterceptableType.StaticMethod
+System.Console.WriteLine
