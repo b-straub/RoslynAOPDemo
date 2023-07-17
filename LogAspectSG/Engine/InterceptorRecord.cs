@@ -1,8 +1,10 @@
 ﻿
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace LogAspectSG.Engine
@@ -18,7 +20,7 @@ namespace LogAspectSG.Engine
         {
             StringBuilder sb = new();
             var returnType = record.Method.ReturnType.ToString();
-            var tas = record.MakeTypeArguments();
+            var taT = MakeTypeArguments(record.Method.ContainingType.TypeArguments);
 
             if (record.Method.IsStatic)
             {
@@ -26,8 +28,7 @@ namespace LogAspectSG.Engine
         [InterceptsLocation(@""{record.Path}"", {record.Line + 1}, {record.Character + 1})]
         {record.Method.ContainingType.AccessToString()} static {returnType} Intercept{record.Method.Name}_{record.Line}{record.Character}({record.MakeParameters()})
         {{
-            Console.WriteLine($""Call {record.Method.Name} in {Path.GetFileName(record.Path)} Line {record.Line + 1} Character {record.Character + 1}"");
-            {record.MakeMethod(returnType == "void", true, tas.TYPE, tas.METHOD)}
+            {record.MakeMethod(returnType == "void", true)}
         }}
 ");
             }
@@ -35,10 +36,9 @@ namespace LogAspectSG.Engine
             {
                 sb.Append($@"
         [InterceptsLocation(@""{record.Path}"", {record.Line + 1}, {record.Character + 1})]
-        {record.Method.ContainingType.AccessToString()} static {returnType} Intercept{record.Method.Name}_{record.Line}{record.Character}(this {record.Method.ContainingType.Name}{tas.TYPE} type, {record.MakeParameters()})
+        {record.Method.ContainingType.AccessToString()} static {returnType} Intercept{record.Method.Name}_{record.Line}{record.Character}(this {record.Method.ContainingType.Name}{taT} type, {record.MakeParameters()})
         {{
-            Console.WriteLine($""Call {record.Method.Name} in {Path.GetFileName(record.Path)} Line {record.Line + 1} Character {record.Character + 1}"");
-            {record.MakeMethod(returnType == "void", false, tas.TYPE, tas.METHOD)}
+            {record.MakeMethod(returnType == "void", false)}
         }}
 ");
             }
@@ -46,7 +46,7 @@ namespace LogAspectSG.Engine
             return sb.ToString();
         }
 
-        private static readonly char[] trim = new[] { ' ', ',' };
+        private static readonly char[] trim = new[] { ' ', ',', '.' };
 
         public static string MakeParameters(this InterceptorRecord record)
         {
@@ -61,15 +61,35 @@ namespace LogAspectSG.Engine
             return sb.ToString().TrimEnd(trim);
         }
 
-        public static (string TYPE, string METHOD) MakeTypeArguments(this InterceptorRecord record)
+        public static string MakeStaticType(this InterceptorRecord record)
+        {
+            var typeSymbol = record.Method.ContainingType;
+            var typeName = string.Empty;
+
+            while (typeSymbol is not null && typeSymbol.ContainingNamespace.Equals(record.Method.ContainingType.ContainingNamespace, SymbolEqualityComparer.Default))
+            {
+                var tn = typeSymbol.Name;
+                string taT = MakeTypeArguments(typeSymbol.TypeArguments);
+                tn += taT;
+                tn += ".";
+
+                typeName = tn + typeName;
+
+                typeSymbol = typeSymbol.ContainingType;
+            }
+
+            return typeName.TrimEnd(trim);
+        }
+
+        private static string MakeTypeArguments(this ImmutableArray<ITypeSymbol> typeArguments)
         {
             string taT = string.Empty;
 
-            if (record.Method.ContainingType.TypeArguments.Any())
+            if (typeArguments.Any())
             {
                 taT += "<";
 
-                foreach(var ta in record.Method.ContainingType.TypeArguments)
+                foreach (var ta in typeArguments)
                 {
                     taT += $"{ta}, ";
                 }
@@ -78,48 +98,33 @@ namespace LogAspectSG.Engine
                 taT += ">";
             }
 
-            string taM = string.Empty;
-
-            if (record.Method.TypeArguments.Any())
-            {
-                taM += "<";
-
-                foreach (var ta in record.Method.TypeArguments)
-                {
-                    taM += $"{ta}, ";
-                }
-
-                taM = taM.TrimEnd(trim);
-                taM += ">";
-            }
-
-            return (taT, taM);
+            return taT;
         }
 
-
-        public static string MakeMethod(this InterceptorRecord record, bool isVoid, bool isStatic, string ta, string tc)
+        public static string MakeMethod(this InterceptorRecord record, bool isVoid, bool isStatic)
         {
-            StringBuilder sb = new();
+            StringBuilder sbm = new();
+            var returnType = record.Method.ReturnType.ToString();
 
             if (!isVoid)
             {
-                sb.Append("return ");
+                sbm.Append("result = ");
             }
 
             if (isStatic)
             {
-                sb.Append(record.Method.ContainingType.Name);
-                sb.Append(ta);
+                sbm.Append(record.MakeStaticType());
             }
             else
             {
-                sb.Append("type");
+                sbm.Append("type");
             }
 
-            sb.Append('.');
-            sb.Append(record.Method.Name);
-            sb.Append(tc);
-            sb.Append('(');
+            sbm.Append('.');
+            sbm.Append(record.Method.Name);
+            string taM = MakeTypeArguments(record.Method.TypeArguments);
+            sbm.Append(taM);
+            sbm.Append('(');
 
             StringBuilder sbp = new();
 
@@ -129,9 +134,36 @@ namespace LogAspectSG.Engine
                 sbp.Append(", ");
             }
 
-            sb.Append(sbp.ToString().TrimEnd(trim));
+            sbm.Append(sbp.ToString().TrimEnd(trim));
 
-            sb.Append(");");
+            sbm.Append(");");
+
+            StringBuilder sb = new();
+
+            if (!isVoid)
+            {
+                sb.Append($@"
+            {returnType} result = null;
+");
+            }
+
+            sb.Append($@"
+            try
+            {{
+                {sbm}
+                Console.WriteLine($""Success for {record.Method.Name} in {Path.GetFileName(record.Path)} Line {record.Line + 1} Character {record.Character + 1}"");
+            }}
+            catch(Exception e)
+            {{
+                Console.WriteLine($""Error {{e.Message}} for {record.Method.Name} in {Path.GetFileName(record.Path)} Line {record.Line + 1} Character {record.Character + 1}"");
+            }}
+");
+
+            if (!isVoid)
+            {
+                sb.Append(@"
+            return result;");
+            }
 
             return sb.ToString();
         }

@@ -1,4 +1,4 @@
-﻿using LogAspectTest;
+﻿using LogAspectDemo;
 
 var it = new InterceptableType();
 it.MyMethod(nameof(InterceptableType), "World", additionalLines: new[] {"Line1", "Line2"});
@@ -17,4 +17,8 @@ igt.NonStaticMethod<string>(5, "Test");
 igt.NonStaticMethod<int, string>(5, "Test");
 
 Console.WriteLine(InterceptableGenericType<double>.StaticMethod(5, "Test"));
+
+Grandparent<int>.Parent<bool>.Original(1, false, "a");
+
+GenericExample.M(5);
 

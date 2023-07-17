@@ -1,4 +1,4 @@
-﻿namespace LogAspectTest
+﻿namespace LogAspectDemo
 {
     internal class InterceptableBaseType()
     {
@@ -30,7 +30,7 @@
 
     internal class InterceptableType() : InterceptableDerivedType
     {
-        public static int StaticMethod(int value)
+        public static int? StaticMethod(int value)
         {
             return value + 1;
         }
@@ -43,7 +43,7 @@
 
     internal class InterceptableGenericType<T1>()
     {
-        public static string StaticMethod<T2>(T1 value1, T2 value2)
+        public static string? StaticMethod<T2>(T1 value1, T2 value2)
         {
             return $"{value1}-{value2}";
         }
