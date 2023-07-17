@@ -11,13 +11,13 @@ namespace LogAspectSG.Engine
     {
         public static InterceptorRecord? CreateInterceptorRecord(this InterceptorRecordBase baseRecord, Compilation compilation, CancellationToken cancellationToken)
         {
-            var parent = baseRecord.NameSyntax.AncestorsAndSelf().OfType<MethodDeclarationSyntax>().FirstOrDefault();
-            var inMethod = parent is not null && parent.Identifier.ValueText == baseRecord.NameSyntax.Identifier.ValueText;
+            var parent = baseRecord.Identifier.AncestorsAndSelf().OfType<MethodDeclarationSyntax>().FirstOrDefault();
+            var inMethod = parent is not null && parent.Identifier.ValueText == baseRecord.Identifier.Identifier.ValueText;
 
-            var path = baseRecord.NameSyntax.SyntaxTree.GetInterceptorFilePath(compilation);
-            var linePosition = baseRecord.NameSyntax.SyntaxTree.GetLineSpan(baseRecord.NameSyntax.Span, cancellationToken).StartLinePosition;
+            var path = baseRecord.Identifier.SyntaxTree.GetInterceptorFilePath(compilation);
+            var linePosition = baseRecord.Identifier.SyntaxTree.GetLineSpan(baseRecord.Identifier.Span, cancellationToken).StartLinePosition;
 
-            return new(baseRecord.Method, baseRecord.NameSyntax, inMethod, path, linePosition.Line, linePosition.Character);
+            return new(baseRecord.Method, baseRecord.Identifier, inMethod, path, linePosition.Line, linePosition.Character);
         }
 
         public static IEnumerable<InterceptorRecord> InterceptorRecords(this IEnumerable<InterceptorRecordBase> baseRecords, Compilation compilation, CancellationToken cancellationToken)

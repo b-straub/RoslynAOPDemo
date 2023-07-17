@@ -4,7 +4,6 @@ using System.Linq;
 using System.Collections.Immutable;
 using System.Threading;
 using Microsoft.CodeAnalysis.CSharp;
-using System.Text.RegularExpressions;
 
 namespace LogAspectSG.Engine
 {
@@ -22,31 +21,22 @@ namespace LogAspectSG.Engine
 
             if (invocationSymbolInfo.Symbol is IMethodSymbol methodSymbol)
             {
-                var names = invocation.DescendantNodesAndSelf().OfType<SimpleNameSyntax>();
-                var name = names.Where(i => i.Identifier.ValueText == methodSymbol.Name).FirstOrDefault();
+                var identifiers = invocation.DescendantNodesAndSelf().OfType<IdentifierNameSyntax>();
+                var identifier = identifiers.Where(i => i.Identifier.ValueText == methodSymbol.Name).FirstOrDefault();
 
-                if (name is not null)
+                if (identifier is not null)
                 {
-                    return new(methodSymbol, name);
+                    return new(methodSymbol, identifier);
                 }
             }
 
             return null;
         }
 
-        private static readonly Regex r_replaceMethodParts = new(pattern: @"[<(][[\w,\[\]? ]*[>)]", options: RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
         public static bool FilterTypes(InterceptorRecordBase record, ImmutableArray<string> log)
         {
-            var methodName = record.Method.ToDisplayString();
-            var methodSearch = r_replaceMethodParts.Replace(methodName, string.Empty).ToLowerInvariant();
-
-            if (record.Method.TypeArguments.Any())
-            {
-                methodSearch += $"`{record.Method.TypeArguments.Length}";
-            }
-
-            return log.Any(l => l.Contains(methodSearch));
+            var methodName = record.Method.ToDisplayString().CutBefore('(').ToLowerInvariant();
+            return log.Any(l => l.Contains(methodName));
         }
     }
 }
