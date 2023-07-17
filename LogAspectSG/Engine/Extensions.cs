@@ -20,18 +20,6 @@ namespace LogAspectSG.Engine
         {
             return symbol.DeclaredAccessibility.ToString().ToLowerInvariant();
         }
-
-        public static string CutBefore(this string value, char cut)
-        {
-            var position = value.IndexOf(cut);
-
-            if (position >= 0)
-            {
-                return value[..position];
-            }
-
-            return value;
-        }
     }
 }
 

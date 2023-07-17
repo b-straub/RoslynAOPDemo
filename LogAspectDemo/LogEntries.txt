@@ -1,4 +1,7 @@
 ﻿LogAspectTest.InterceptableBaseType.MyMethod
 LogAspectTest.InterceptableType.MyMethod
 LogAspectTest.InterceptableType.StaticMethod
+LogAspectTest.InterceptableGenericType.StaticMethod`1
+LogAspectTest.InterceptableGenericType.NonStaticMethod`1
+LogAspectTest.InterceptableGenericType.NonStaticMethod`2
 System.Console.WriteLine
