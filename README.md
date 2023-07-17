@@ -10,7 +10,7 @@ A demonstration project for the new interceptors feature
 
 ### Demo
 
-The demonstration project has currently one source generator (LogAspectSG) adding a simple logging aspect to ever method list with full qualified name inside 'LogEntries.txt'.
+The demonstration project has currently one source generator (LogAspectSG) adding a simple logging aspect to every method listed with full qualified name inside 'LogEntries.txt'.
 
 Check the sample 'LogAspectDemo' for a simple demonstration of the interception.
 
