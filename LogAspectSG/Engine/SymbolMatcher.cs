@@ -34,7 +34,7 @@ namespace LogAspectSG.Engine
             return null;
         }
 
-        private static readonly Regex r_replaceMethodParts = new(pattern: @"[<(][[\w,\[\]? ]*[>)]", options: RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex r_replaceMethodParts = new(pattern: @"[<(][[\w,.\[\]? ]*[>)]", options: RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static bool FilterTypes(InterceptorRecordBase record, ImmutableArray<string> log)
         {

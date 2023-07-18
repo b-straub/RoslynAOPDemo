@@ -3,6 +3,7 @@ LogAspectDemo.InterceptableType.MyMethod
 LogAspectDemo.InterceptableType.StaticMethod
 LogAspectDemo.InterceptableGenericType.StaticMethod`1
 LogAspectDemo.InterceptableGenericType.NonStaticMethod`1
+LogAspectDemo.InterceptableGenericType.ReturnTestGeneric`1
 LogAspectDemo.InterceptableGenericType.NonStaticMethod`2
 LogAspectDemo.Grandparent.Parent.Original`1
 LogAspectDemo.GenericExample.M`1

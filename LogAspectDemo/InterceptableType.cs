@@ -1,4 +1,5 @@
-﻿namespace LogAspectDemo
+﻿
+namespace LogAspectDemo
 {
     internal class InterceptableBaseType()
     {
@@ -41,12 +42,20 @@
         }
     }
 
-    internal class InterceptableGenericType<T1>()
+    internal class InterceptableGenericType<T1>() 
     {
         public static string? StaticMethod<T2>(T1 value1, T2 value2)
         {
             return $"{value1}-{value2}";
         }
+
+        public static T2? ReturnTestGeneric<T2>(T1 value2) where T2 : SecondNamespace.IReturnTest
+        {
+            var message = value2?.ToString();
+            SecondNamespace.IReturnTest test = new SecondNamespace.ReturnTest(message is null ? "N/A" : message);
+            return (T2?)test;
+        }
+
 
         public void NonStaticMethod<T2>(T1 value1, T2 value2)
         {
