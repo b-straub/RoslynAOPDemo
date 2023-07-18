@@ -156,6 +156,7 @@ namespace LogAspectSG.Engine
             catch(Exception e)
             {{
                 Console.WriteLine($""Error {{e.Message}} for {record.Method.Name} in {Path.GetFileName(record.Path)} Line {record.Line + 1} Character {record.Character + 1}"");
+                throw;
             }}
 ");
 
