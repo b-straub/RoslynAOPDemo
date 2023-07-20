@@ -9,6 +9,21 @@
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<Title>LogAspectSG</Title>
+		<Description>A demonstration SG for interceptors.</Description>
+		<Authors>Bernhard Straub</Authors>
+		<Copyright>Bernhard Straub</Copyright>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryType>git</RepositoryType>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<PackageTags>Roslyn, Interceptors</PackageTags>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageOutputPath>..\Nuget</PackageOutputPath>
+		<PackageVersion>0.0.5</PackageVersion>
+	</PropertyGroup>
+	
 	<ItemGroup>
 		<PackageReference Include="IndexRange" Version="1.0.2" PrivateAssets="All" />
 		<PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
@@ -20,6 +35,15 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="README.md" Pack="true" PackagePath="." />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<!-- Package the generator in the analyzer directory of the nuget package -->
+		<None Include="$(OutputPath)\LogAspectSG.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
 	</ItemGroup>
 	
 </Project>

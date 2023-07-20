@@ -11,7 +11,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\LogAspectSG\LogAspectSG.csproj" OutputItemType="Analyzer" />
+		<ProjectReference Include="..\LogAspectSG\LogAspectSG.csproj" PrivateAssets="All" OutputItemType="Analyzer" />
 	</ItemGroup>
 
 	<ItemGroup>

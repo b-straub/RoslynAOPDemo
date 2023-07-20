@@ -4,21 +4,21 @@ using System.Text;
 
 namespace LogAspectSG.Engine
 {
-    internal static class SourceDump
+    internal static class Emitter
     {
-        public static string DumpNamespace(this IEnumerable<InterceptorRecord> records, string usedNamespace)
+        public static string DumpNamespace(this IEnumerable<InterceptorStore> stores, string usedNamespace)
         {
             StringBuilder sb = new();
 
-            var usedRecords = records.Where(r => r.Method.ContainingType.ContainingNamespace.Name == usedNamespace);
+            IEnumerable<InterceptorStore> usedStores = stores.Where(r => r.Method.ContainingType.ContainingNamespace.Name == usedNamespace);
 
-            var usings = DefaultUsings(usedRecords);
+            IEnumerable<string> usings = CreateUsings(usedStores);
 
             _ = sb.Append(DumpNamespaceFirst(usedNamespace, usings));
 
-            foreach (var record in usedRecords)
+            foreach (InterceptorStore? store in usedStores)
             {
-                _ = sb.Append(record.DumpRecord());
+                _ = sb.Append(store.DumpStore());
             }
             _ = sb.Append(DumpNamespaceLast());
 
@@ -66,14 +66,14 @@ namespace {namespaceName}
             return sb.ToString();
         }
 
-        private static IEnumerable<string> DefaultUsings(IEnumerable<InterceptorRecord> records)
+        private static IEnumerable<string> CreateUsings(IEnumerable<InterceptorStore> stores)
         {
             List<string> usings = new()
             {
                 "System.Runtime.CompilerServices"
             };
 
-            var recordUsings = records.Select(r => r.Method.ContainingType.ContainingNamespace.Name);
+            IEnumerable<string> recordUsings = stores.Select(r => r.Method.ContainingType.ContainingNamespace.Name);
 
             usings.AddRange(recordUsings);
 
